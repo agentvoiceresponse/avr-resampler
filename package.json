@@ -1,7 +1,7 @@
 {
   "name": "avr-resampler",
-  "version": "1.0.0",
-  "description": "Audio Resampler for STS or TTS service",
+  "version": "1.0.1",
+  "description": "Audio Resampler for Agent Voice Response (AVR) STS or TTS service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
