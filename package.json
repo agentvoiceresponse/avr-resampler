@@ -1,0 +1,32 @@
+{
+  "name": "avr-resampler",
+  "version": "1.0.0",
+  "description": "Audio Resampler for STS or TTS service",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "audio",
+    "resampler",
+    "typescript",
+    "sts",
+    "avr"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@alexanderolsen/libsamplerate-js": "^2.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "dist"
+  ]
+} 
