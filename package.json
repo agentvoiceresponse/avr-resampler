@@ -1,12 +1,12 @@
 {
   "name": "avr-resampler",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Audio Resampler for Agent Voice Response (AVR) STS or TTS service",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
+    "start:dev": "tsc --watch",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
@@ -29,4 +29,4 @@
   "files": [
     "dist"
   ]
-} 
+}
