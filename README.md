@@ -30,24 +30,25 @@ npm install avr-resampler
 import { AudioResampler } from 'avr-resampler';
 
 const customResampler = new AudioResampler(48000); // 48 kHz provider rate
-const result = await customResampler.handleDownsampleChunk(audioBuffer);
+await customResampler.initialize();
+const result = customResampler.downsample(audioBuffer);
 ```
 
 ### Constructor Parameters
 
-- `providerSampleRate` (number, optional): The sample rate of the audio provider in Hz. Defaults to 24000 Hz.
+- `providerSampleRate` (number, optional): The sample rate of the audio provider in Hz. Defaults to 48000 Hz.
 
 ### Methods
 
-#### `handleDownsampleChunk(data: Buffer): Promise<Buffer | null>`
+#### `downsample(data: Buffer): Buffer`
 
 Processes incoming audio chunks from the provider and converts them to client format (8000 Hz).
 
 - **Input**: Raw audio data from provider
-- **Output**: Converted audio data or `null` if not enough data accumulated
+- **Output**: Converted audio data if not enough data accumulated
 - **Usage**: Call repeatedly with incoming audio chunks
 
-#### `handleUpsampleChunk(data: Buffer): Promise<Buffer>`
+#### `upsample(data: Buffer): Buffer`
 
 Processes incoming audio chunks from the client (8000 Hz) and converts them to provider format.
 
@@ -63,16 +64,6 @@ Cleans up resources and resets the resampler state.
 
 Initializes the audio resamplers. Called automatically when needed.
 
-### Static Methods
-
-#### `AudioResampler.int16ToFloat32(int16: Int16Array): Float32Array`
-
-Converts Int16 audio samples to Float32 format for resampling.
-
-#### `AudioResampler.float32ToInt16(float32: Float32Array): Int16Array`
-
-Converts Float32 audio samples back to Int16 format.
-
 ## Example
 
 ```typescript
@@ -80,10 +71,11 @@ import { AudioResampler } from 'avr-resampler';
 
 // Create resampler for 48 kHz provider
 const resampler = new AudioResampler(48000);
+await resampler.initialize();
 
 // Process provider audio → client audio
 const providerAudio = Buffer.from([/* your audio data */]);
-const clientAudio = await resampler.handleDownsampleChunk(providerAudio);
+const clientAudio = resampler.downsample(providerAudio);
 
 if (clientAudio) {
   // Send to client
@@ -92,7 +84,7 @@ if (clientAudio) {
 
 // Process client audio → provider audio
 const clientInput = Buffer.from([/* client audio data */]);
-const providerInput = await resampler.handleUpsampleChunk(clientInput);
+const providerInput = await resampler.upsample(clientInput);
 
 // Send to provider
 sendToProvider(providerInput);
@@ -100,14 +92,6 @@ sendToProvider(providerInput);
 // Clean up when done
 resampler.destroy();
 ```
-
-## Buffer Sizes
-
-The package automatically calculates optimal buffer sizes based on sample rates:
-
-- **Provider Chunk Size**: 10ms of audio at provider sample rate
-- **Client Chunk Size**: 20ms of audio at 8000 Hz
-- **Downsample Threshold**: 2 provider chunks for processing
 
 ## Dependencies
 
