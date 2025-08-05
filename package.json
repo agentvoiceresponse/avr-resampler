@@ -20,9 +20,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@alexanderolsen/libsamplerate-js": "^2.1.2",
-    "sox": "^0.1.0",
-    "sox-audio": "^0.3.0"
+    "@alexanderolsen/libsamplerate-js": "^2.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
