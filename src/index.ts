@@ -47,7 +47,7 @@ class AudioResampler {
   /**
    * Convert PCM16 to Float32, downsample, filter and convert back to PCM16
    */
-  async downsample(pcm: Buffer): Promise<Buffer> {
+  downsample(pcm: Buffer): Buffer {
     const sampleCount = pcm.length / 2;
     const float32Input = new Float32Array(sampleCount);
   
@@ -56,7 +56,7 @@ class AudioResampler {
       float32Input[i] = int16 / 32768;
     }
   
-    const float32Output: Float32Array = await this.downResampler.full(float32Input);
+    const float32Output: Float32Array = this.downResampler.full(float32Input);
   
     const int16Output = new Int16Array(float32Output.length);
     for (let i = 0; i < float32Output.length; i++) {
@@ -67,7 +67,7 @@ class AudioResampler {
     return Buffer.from(int16Output.buffer);
   }
 
-  async upsample(pcm: Buffer): Promise<Buffer> {
+  upsample(pcm: Buffer): Buffer {
     const sampleCount = pcm.length / 2; // 16 bit = 2 byte per sample
     const float32Input = new Float32Array(sampleCount);
 
@@ -77,7 +77,7 @@ class AudioResampler {
       float32Input[i] = int16 / 32768;
     } 
   
-    const float32Output: Float32Array = await this.upResampler.full(float32Input);
+    const float32Output: Float32Array = this.upResampler.full(float32Input);
 
     const int16Output = new Int16Array(float32Output.length);
     for (let i = 0; i < float32Output.length; i++) {
@@ -88,9 +88,9 @@ class AudioResampler {
     return Buffer.from(int16Output.buffer);
   }
 
-  async destroy(): Promise<void> {
-    await this.downResampler.destroy();
-    await this.upResampler.destroy();
+  destroy() {
+    this.downResampler.destroy();
+    this.upResampler.destroy();
   }
 }
 
