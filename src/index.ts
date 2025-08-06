@@ -64,7 +64,7 @@ class AudioResampler {
       int16Output[i] = Math.round(s * 32767);
     }
     
-    return Buffer.from(int16Output.buffer);
+    return Buffer.from(int16Output.buffer, int16Output.byteOffset, int16Output.byteLength);
   }
 
   upsample(pcm: Buffer): Buffer {
@@ -85,7 +85,7 @@ class AudioResampler {
       int16Output[i] = Math.round(s * 32767);
     }
   
-    return Buffer.from(int16Output.buffer);
+    return Buffer.from(int16Output.buffer, int16Output.byteOffset, int16Output.byteLength);
   }
 
   destroy() {
